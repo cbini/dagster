@@ -9,6 +9,7 @@ import Layout from "../layouts/MainLayout";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useVersion } from "../util/useVersion";
+import { PersistentTabProvider } from "components/PersistentTabContext";
 
 const BASE_URL = "https://docs.dagster.io";
 const DEFAULT_SEO = {
@@ -57,7 +58,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <DefaultSeo canonical={canonicalUrl} {...DEFAULT_SEO} />
-      {getLayout(<Component {...pageProps} />)}
+      <PersistentTabProvider>
+        {getLayout(<Component {...pageProps} />)}
+      </PersistentTabProvider>
     </>
   );
 }

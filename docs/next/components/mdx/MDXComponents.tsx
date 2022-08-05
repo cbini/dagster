@@ -19,6 +19,7 @@ import path from "path";
 import GenerateAgentToken from "./includes/dagster-cloud/GenerateAgentToken.mdx";
 import BDCreateConfigureAgent from "./includes/dagster-cloud/BDCreateConfigureAgent.mdx";
 import { Tab, Transition } from "@headlessui/react";
+import { PersistentTabContext } from "components/PersistentTabContext";
 
 const PyObject: React.FunctionComponent<{
   module: string;
@@ -291,9 +292,7 @@ const ReferenceTable = ({ children }) => {
           <th>Description</th>
         </tr>
       </thead>
-      <tbody>
-        {children}
-      </tbody>
+      <tbody>{children}</tbody>
     </table>
   );
 };
@@ -303,14 +302,12 @@ const ReferenceTableItem = ({ propertyName, children }) => {
     <tr>
       <td
         style={{
-        width: "40%",
+          width: "40%",
         }}
-        >
+      >
         {propertyName}
       </td>
-      <td>
-        {children}
-      </td>
+      <td>{children}</td>
     </tr>
   );
 };
@@ -457,9 +454,9 @@ const ArticleListItem = ({ title, href }) => {
 const ExampleItemSmall = ({ title, hrefCode, tags = [] }) => {
   return (
     <button className="w-full h-full py-3 px-4 rounded-lg bg-white border hover:border-gray-500 text-gray-500">
-        <span className="font-bold text-gable-green hover:no-underline">
-          {title}
-        </span>
+      <span className="font-bold text-gable-green hover:no-underline">
+        {title}
+      </span>
       <div className="mt-2 text-sm space-x-1 space-y-1 bg-opacity-70">
         {tags.map((tag) => (
           <Badge key={tag} text={tag} />
@@ -513,39 +510,59 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function TabGroup({ entries }: { entries: Entry[] }) {
+const TabGroup: React.FC<{ entries: Entry[]; persistentKey?: string }> = ({
+  entries,
+  persistentKey,
+}) => {
+  const contents = (
+    <>
+      <Tab.List className="flex space-x-2 m-2">
+        {entries.map((entry, idx) => (
+          <Tab
+            key={idx}
+            className={({ selected }) =>
+              classNames(
+                "w-full py-3 text-sm font-bold leading-5",
+                "focus:outline-none border-gray-200",
+                selected
+                  ? "border-b-2 border-primary-500 text-primary-500"
+                  : "border-b hover:border-gray-500 hover:text-gray-700"
+              )
+            }
+          >
+            {entry?.name}
+          </Tab>
+        ))}
+      </Tab.List>
+      <Tab.Panels>
+        {entries.map((entry, idx) => (
+          <Tab.Panel key={idx} className={classNames("p-3")}>
+            {entry?.content}
+          </Tab.Panel>
+        ))}
+      </Tab.Panels>
+    </>
+  );
+
   return (
     <div className="w-full px-2 py-2 sm:px-0">
-      <Tab.Group>
-        <Tab.List className="flex space-x-2 m-2">
-          {entries.map((entry, idx) => (
-            <Tab
-              key={idx}
-              className={({ selected }) =>
-                classNames(
-                  "w-full py-3 text-sm font-bold leading-5",
-                  "focus:outline-none border-gray-200",
-                  selected
-                    ? "border-b-2 border-primary-500 text-primary-500"
-                    : "border-b hover:border-gray-500 hover:text-gray-700"
-                )
-              }
+      {persistentKey ? (
+        <PersistentTabContext.Consumer>
+          {(context) => (
+            <Tab.Group
+              selectedIndex={context.getTabState(persistentKey)}
+              onChange={(idx) => context.setTabState(persistentKey, idx)}
             >
-              {entry?.name}
-            </Tab>
-          ))}
-        </Tab.List>
-        <Tab.Panels>
-          {entries.map((entry, idx) => (
-            <Tab.Panel key={idx} className={classNames("p-3")}>
-              {entry?.content}
-            </Tab.Panel>
-          ))}
-        </Tab.Panels>
-      </Tab.Group>
+              {contents}
+            </Tab.Group>
+          )}
+        </PersistentTabContext.Consumer>
+      ) : (
+        <Tab.Group>{contents}</Tab.Group>
+      )}
     </div>
   );
-}
+};
 
 export default {
   a: ({ children, ...props }) => {
