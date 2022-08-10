@@ -224,7 +224,7 @@ def partition_statuses_from_run_partition_data(
                 id=f"{partition_set_name}:{name}{suffix}",
                 partitionName=name,
                 runId=partition_data.run_id,
-                runStatus=partition_data.status,
+                runStatus=partition_data.status.value,
                 runDuration=partition_data.end_time - partition_data.start_time
                 if partition_data.end_time and partition_data.start_time
                 else None,

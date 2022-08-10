@@ -3056,7 +3056,7 @@ export interface SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitio
 export type SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitions_type_innerTypes_outputSchemaType = SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitions_type_innerTypes_outputSchemaType_ArrayConfigType | SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitions_type_innerTypes_outputSchemaType_EnumConfigType | SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitions_type_innerTypes_outputSchemaType_RegularConfigType | SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitions_type_innerTypes_outputSchemaType_CompositeConfigType | SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitions_type_innerTypes_outputSchemaType_ScalarUnionConfigType | SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitions_type_innerTypes_outputSchemaType_MapConfigType;
 
 export interface SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitions_type_innerTypes {
-  __typename: "RegularDagsterType" | "ListDagsterType" | "NullableDagsterType";
+  __typename: "ListDagsterType" | "NullableDagsterType" | "RegularDagsterType";
   key: string;
   name: string | null;
   displayName: string;
@@ -3071,7 +3071,7 @@ export interface SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitio
 }
 
 export interface SidebarAssetQuery_assetNodeOrError_AssetNode_op_outputDefinitions_type {
-  __typename: "RegularDagsterType" | "ListDagsterType" | "NullableDagsterType";
+  __typename: "ListDagsterType" | "NullableDagsterType" | "RegularDagsterType";
   key: string;
   name: string | null;
   displayName: string;
