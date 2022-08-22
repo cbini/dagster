@@ -70,13 +70,14 @@ class SourceAsset(
         _metadata_entries: Optional[Sequence[Union[MetadataEntry, PartitionMetadataEntry]]] = None,
         group_name: Optional[str] = None,
         resource_defs: Optional[Mapping[str, ResourceDefinition]] = None,
+        _experimental_warn: bool = True,
         # Add additional fields to with_resources and with_group below
     ):
 
-        if resource_defs is not None:
+        if resource_defs is not None and _experimental_warn:
             experimental_arg_warning("resource_defs", "SourceAsset.__new__")
 
-        if io_manager_def is not None:
+        if io_manager_def is not None and _experimental_warn:
             experimental_arg_warning("io_manager_def", "SourceAsset.__new__")
 
         key = AssetKey.from_coerceable(key)
@@ -169,6 +170,7 @@ class SourceAsset(
             _metadata_entries=self.metadata_entries,
             resource_defs=relevant_resource_defs,
             group_name=self.group_name,
+            _experimental_warn=False,
         )
 
     def with_group_name(self, group_name: str) -> "SourceAsset":
@@ -186,6 +188,7 @@ class SourceAsset(
             partitions_def=self.partitions_def,
             group_name=group_name,
             resource_defs=self.resource_defs,
+            _experimental_warn=False,
         )
 
     def get_resource_requirements(self) -> Iterator[ResourceRequirement]:

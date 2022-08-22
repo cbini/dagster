@@ -639,6 +639,7 @@ class AssetsDefinition(ResourceAddable):
                     resource_defs=self.resource_defs,
                     partitions_def=self.partitions_def,
                     group_name=self.group_names_by_key[asset_key],
+                    _experimental_warn=False,
                 )
             )
 
